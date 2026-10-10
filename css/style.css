@@ -1,5 +1,130 @@
-body{font-family:'Space Grotesk',sans-serif;background:#fcf8f3;}
-.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;letter-spacing:-1px;line-height:1}
-.sub{font-size:9px;letter-spacing:0.3em;opacity:.6}
-#poseGrid::-webkit-scrollbar{display:none}
-.cloth-item.selected,.pose-item.selected{border:2px solid #000!important;}
+/* Base & Typography */
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: #f5f3ef;
+  color: #111111;
+  -webkit-font-smoothing: antialiased;
+}
+
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.sub {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  opacity: 0.6;
+  font-weight: 600;
+}
+
+/* Custom Scrollbars */
+#poseGrid::-webkit-scrollbar,
+#categoryTabs::-webkit-scrollbar {
+  display: none;
+}
+#poseGrid,
+#categoryTabs {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+#clothesGrid::-webkit-scrollbar {
+  width: 5px;
+}
+#clothesGrid::-webkit-scrollbar-track {
+  background: transparent;
+}
+#clothesGrid::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 9999px;
+}
+#clothesGrid::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}
+
+/* Interactive Card & Tile States */
+.cloth-item,
+.pose-item {
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.cloth-item:hover,
+.pose-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: #e5e7eb;
+}
+
+.cloth-item.selected,
+.pose-item.selected {
+  border-color: #000000 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.cloth-item.selected::after,
+.pose-item.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 18px;
+  height: 18px;
+  background: #000000;
+  color: #ffffff;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Category Filter Pills */
+.cat-pill {
+  transition: all 0.15s ease-in-out;
+}
+.cat-pill.active {
+  background-color: #111827 !important;
+  color: #ffffff !important;
+}
+
+/* Try-On Viewport Layer Positioning */
+#garmentLayer {
+  /* Smooth transition when swapping garments */
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.08));
+}
+
+/* Specific garment fit adjustments */
+#garmentLayer[data-type="kurta"] {
+  top: 19% !important;
+  width: 72% !important;
+}
+
+#garmentLayer[data-type="shirt"],
+#garmentLayer[data-type="tshirt"] {
+  top: 20% !important;
+  width: 66% !important;
+}
+
+#garmentLayer[data-type="saree"] {
+  top: 18% !important;
+  width: 80% !important;
+}
+
+/* Face Avatar Ring */
+#faceLayer {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 2px solid #ffffff;
+}

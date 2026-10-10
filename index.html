@@ -1,53 +1,172 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DRIP — drip your own style</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Space+Grotesk:wght@400&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DRIP — Drip Your Own Style</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-<nav class="flex justify-between p-6 max-w-[1300px] mx-auto">
-  <div><h1 class="logo">DRIP.</h1><p class="sub">DRIP YOUR OWN STYLE</p></div>
-  <button id="myClosetBtn" class="text-xs bg-white border px-4 py-2 rounded-full">MY CLOSET (0)</button>
-</nav>
+<body class="bg-[#f5f3ef] text-[#111111] font-['Space_Grotesk'] antialiased min-h-screen pb-12">
 
-<div class="max-w-[1300px] mx-auto px-6 grid md:grid-cols-[280px_1fr_360px] gap-6">
-  <!-- LEFT: Clothes -->
-  <div class="bg-white rounded-[24px] p-4 h-fit sticky top-6">
-    <h3 class="text-sm font-bold">2. Your Clothes</h3>
-    <input type="file" id="customCloth" class="mt-3 text-[11px] w-full" accept="image/*">
-    <p class="text-[10px] text-gray-400 mt-1">Upload your own t-shirt/kurta - auto added</p>
-    <div id="clothesGrid" class="grid grid-cols-2 gap-2 mt-4 max-h-[600px] overflow-y-auto"></div>
-  </div>
+  <!-- Header / Navigation -->
+  <header class="border-b border-[#e5e0d8] bg-white/70 backdrop-blur-md sticky top-0 z-40">
+    <nav class="flex justify-between items-center px-6 py-4 max-w-[1340px] mx-auto">
+      <div>
+        <h1 class="font-['Syne'] text-2xl tracking-tighter font-extrabold flex items-center gap-1">
+          DRIP<span class="text-pink-500">.</span>
+        </h1>
+        <p class="text-[10px] tracking-widest uppercase text-gray-500 font-semibold">Drip Your Own Style</p>
+      </div>
+      
+      <!-- Gender Filter & Closet -->
+      <div class="flex items-center gap-3">
+        <div id="genderToggle" class="bg-gray-100 p-1 rounded-full flex text-xs font-semibold">
+          <button data-gender="male" class="gender-btn active px-4 py-1.5 rounded-full bg-white shadow-sm transition-all">Men</button>
+          <button data-gender="female" class="gender-btn px-4 py-1.5 rounded-full text-gray-500 hover:text-black transition-all">Women</button>
+        </div>
+        <button id="myClosetBtn" class="text-xs bg-black text-white px-5 py-2 rounded-full font-medium hover:bg-gray-800 transition">
+          MY CLOSET (<span id="closetCount">0</span>)
+        </button>
+      </div>
+    </nav>
+  </header>
 
-  <!-- CENTER: Pose + Face -->
-  <div>
-    <h3 class="text-sm font-bold mb-3">1. Choose Pose</h3>
-    <div id="poseGrid" class="flex gap-3 overflow-x-auto pb-2"></div>
+  <!-- Main Application Stage -->
+  <main class="max-w-[1340px] mx-auto px-6 mt-6 grid grid-cols-1 lg:grid-cols-[300px_1fr_380px] gap-6">
 
-    <div class="mt-6 bg-white rounded-[24px] p-5">
-      <h3 class="text-sm font-bold">3. Your Face</h3>
-      <input type="file" id="faceInput" class="mt-3 text-xs" accept="image/*">
-      <button onclick="openCam()" class="text-[11px] bg-[#ffe9f0] px-3 py-1 rounded-full ml-2">📷 Scan</button>
-      <video id="cam" autoplay class="hidden w-full rounded-xl mt-3"></video>
-      <button id="generate" class="mt-5 w-full bg-black text-white py-4 rounded-full text-sm">GENERATE MY DRIP ✨</button>
-      <p id="status" class="text-[11px] mt-2 text-gray-400"></p>
-    </div>
-  </div>
+    <!-- LEFT COLUMN: Wardrobe & Scraped Clothes -->
+    <section class="bg-white rounded-[24px] p-5 shadow-sm border border-gray-100 h-fit lg:sticky lg:top-24">
+      <div class="flex justify-between items-center">
+        <h2 class="text-sm font-bold tracking-tight">1. Pick Clothes</h2>
+        <span class="text-[10px] bg-pink-100 text-pink-700 px-2 py-0.5 rounded-full font-semibold">Step 1</span>
+      </div>
 
-  <!-- RIGHT: Output -->
-  <div class="bg-white rounded-[24px] p-3 sticky top-6">
-    <p class="text-xs p-2">OUTPUT</p>
-    <div class="bg-[#fcf8f3] rounded-[18px] h-[560px] flex items-center justify-center relative">
-      <img id="output" class="hidden w-full h-full object-contain rounded-[18px]">
-      <p id="place" class="text-xs text-gray-400">Your drip will appear here</p>
-    </div>
-    <button id="download" class="hidden mt-3 w-full border py-3 rounded-full text-xs">Download</button>
-  </div>
-</div>
+      <!-- Categories Pills -->
+      <div id="categoryTabs" class="flex gap-1.5 mt-3 overflow-x-auto pb-1 text-xs">
+        <button data-category="tshirt" class="cat-pill active px-3 py-1 rounded-full bg-gray-900 text-white font-medium whitespace-nowrap">T-Shirts</button>
+        <button data-category="shirt" class="cat-pill px-3 py-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap">Shirts</button>
+        <button data-category="kurta" class="cat-pill px-3 py-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap">Kurtas</button>
+        <button data-category="saree" class="cat-pill hidden px-3 py-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap">Sarees</button>
+      </div>
 
-<script type="module" src="js/app.js"></script>
+      <!-- User Upload Custom Apparel -->
+      <div class="mt-4 p-3 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50/50 hover:bg-gray-50 transition">
+        <label for="customCloth" class="cursor-pointer block text-center">
+          <span class="text-xs font-semibold text-gray-700 block">＋ Upload Custom Garment</span>
+          <span class="text-[10px] text-gray-400 block mt-0.5">PNG, JPG (Auto-saved to Closet)</span>
+        </label>
+        <input type="file" id="customCloth" class="hidden" accept="image/*">
+      </div>
+
+      <!-- Clothes Grid (Populated from assets/clothes/ and uploads) -->
+      <div id="clothesGrid" class="grid grid-cols-2 gap-3 mt-4 max-h-[500px] overflow-y-auto pr-1">
+        <!-- Dynamically injected clothing items -->
+      </div>
+    </section>
+
+    <!-- CENTER COLUMN: Base Models, Poses & Face Scan -->
+    <section class="flex flex-col gap-6">
+      
+      <!-- Poses Carousel -->
+      <div class="bg-white rounded-[24px] p-5 shadow-sm border border-gray-100">
+        <div class="flex justify-between items-center mb-3">
+          <h2 class="text-sm font-bold tracking-tight">2. Select Model / Pose</h2>
+          <span class="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-semibold">Step 2</span>
+        </div>
+        
+        <div id="poseGrid" class="flex gap-3 overflow-x-auto pb-2 scrollbar-thin">
+          <!-- Poses populated from assets/poses/ -->
+        </div>
+      </div>
+
+      <!-- Face Swap / Custom Avatar Section -->
+      <div class="bg-white rounded-[24px] p-5 shadow-sm border border-gray-100">
+        <div class="flex justify-between items-center mb-2">
+          <h2 class="text-sm font-bold tracking-tight">3. Custom Face (Optional)</h2>
+          <span class="text-[10px] bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-semibold">Step 3</span>
+        </div>
+        <p class="text-xs text-gray-400">Put your own head on the mannequin for custom fit.</p>
+
+        <div class="flex items-center gap-3 mt-4">
+          <label for="faceInput" class="cursor-pointer text-xs bg-gray-100 hover:bg-gray-200 px-4 py-2.5 rounded-xl font-medium transition">
+            📁 Upload Face
+          </label>
+          <input type="file" id="faceInput" class="hidden" accept="image/*">
+
+          <button id="camToggleBtn" class="text-xs bg-[#ffe9f0] text-pink-700 px-4 py-2.5 rounded-xl font-medium hover:bg-pink-100 transition flex items-center gap-1.5">
+            <span>📷</span> Open Camera
+          </button>
+        </div>
+
+        <!-- Camera Viewport Box -->
+        <div id="camContainer" class="hidden mt-4 relative rounded-2xl overflow-hidden bg-black aspect-video max-w-sm mx-auto">
+          <video id="cam" autoplay playsinline class="w-full h-full object-cover"></video>
+          <button id="snapPhotoBtn" class="absolute bottom-3 left-1/2 -translate-x-1/2 bg-white text-black text-xs font-bold px-4 py-2 rounded-full shadow-lg">
+            📸 Take Snapshot
+          </button>
+        </div>
+
+        <button id="generate" class="mt-6 w-full bg-black hover:bg-gray-900 text-white font-bold py-4 rounded-full text-sm shadow-md transition transform active:scale-[0.99] flex items-center justify-center gap-2">
+          <span>GENERATE MY DRIP</span>
+          <span>✨</span>
+        </button>
+        <p id="status" class="text-xs text-center mt-2.5 font-medium text-gray-500"></p>
+      </div>
+
+    </section>
+
+    <!-- RIGHT COLUMN: Interactive Live Try-On Canvas & Download -->
+    <section class="bg-white rounded-[24px] p-5 shadow-sm border border-gray-100 h-fit lg:sticky lg:top-24">
+      <div class="flex justify-between items-center mb-3">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-gray-500">Live Try-On Canvas</h2>
+        <span id="garmentTag" class="text-[11px] font-medium bg-gray-100 px-2 py-0.5 rounded-md text-gray-600">No Item</span>
+      </div>
+
+      <!-- Multi-Layer Try-On Stage -->
+      <div class="bg-[#fcf8f3] rounded-[20px] h-[520px] flex items-center justify-center relative overflow-hidden border border-[#eae3d9]">
+        
+        <!-- Layer 1: Mannequin Base Pose -->
+        <img id="poseLayer" class="absolute inset-0 w-full h-full object-contain pointer-events-none z-10 transition-all duration-300" src="assets/poses/male/pose_1.svg" alt="Base Pose">
+
+        <!-- Layer 2: Transparent Garment Overlay -->
+        <img id="garmentLayer" class="hidden absolute w-[68%] top-[19%] left-1/2 -translate-x-1/2 object-contain pointer-events-none z-20 transition-all duration-200" alt="Garment Layer">
+
+        <!-- Layer 3: Face Avatar Overlay -->
+        <img id="faceLayer" class="hidden absolute w-[14%] top-[7.5%] left-1/2 -translate-x-1/2 rounded-full aspect-square object-cover pointer-events-none z-30 ring-2 ring-white/50 shadow-sm" alt="Face Layer">
+
+        <!-- Empty Canvas Placeholder State -->
+        <div id="place" class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-0">
+          <div class="w-12 h-12 rounded-full bg-amber-100/60 flex items-center justify-center text-xl mb-2">👕</div>
+          <p class="text-xs font-semibold text-gray-700">Preview Viewport</p>
+          <p class="text-[11px] text-gray-400 mt-1 max-w-[200px]">Click any clothes or pose on the left to start fitting</p>
+        </div>
+
+        <!-- Rendered Final Image Canvas (For Export/Download) -->
+        <canvas id="exportCanvas" class="hidden"></canvas>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mt-4 flex flex-col gap-2">
+        <button id="downloadBtn" class="w-full border-2 border-black hover:bg-black hover:text-white text-black font-bold py-3 rounded-full text-xs transition duration-150 flex items-center justify-center gap-2">
+          <span>⬇ Save Look to Device</span>
+        </button>
+        <button id="resetFitBtn" class="text-[11px] text-gray-400 hover:text-red-500 text-center py-1 transition">
+          Clear Garment
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modular App Script -->
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

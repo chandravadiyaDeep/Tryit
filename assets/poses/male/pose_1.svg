@@ -1,0 +1,12 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 600" width="100%" height="100%">
+  <rect width="100%" height="100%" fill="#f1f5f9" />
+  <!-- Head -->
+  <circle cx="150" cy="70" r="35" fill="#cbd5e1" stroke="#94a3b8" stroke-width="2"/>
+  <!-- Neck -->
+  <rect x="141" y="102" width="18" height="20" fill="#cbd5e1"/>
+  <!-- Torso / Broad Shoulders -->
+  <path d="M 95 122 Q 150 115 205 122 L 190 250 Q 150 255 110 250 Z" fill="#cbd5e1" stroke="#94a3b8" stroke-width="2"/>
+  <!-- Legs -->
+  <path d="M 112 250 L 110 490 L 138 490 L 146 255 Z" fill="#cbd5e1"/>
+  <path d="M 154 255 L 162 490 L 190 490 L 188 250 Z" fill="#cbd5e1"/>
+</svg>
