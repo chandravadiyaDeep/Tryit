@@ -1,0 +1,5 @@
+body{font-family:'Space Grotesk',sans-serif;background:#fcf8f3;}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;letter-spacing:-1px;line-height:1}
+.sub{font-size:9px;letter-spacing:0.3em;opacity:.6}
+#poseGrid::-webkit-scrollbar{display:none}
+.cloth-item.selected,.pose-item.selected{border:2px solid #000!important;}

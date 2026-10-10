@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRIP — drip your own style</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Space+Grotesk:wght@400&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="flex justify-between p-6 max-w-[1300px] mx-auto">
+  <div><h1 class="logo">DRIP.</h1><p class="sub">DRIP YOUR OWN STYLE</p></div>
+  <button id="myClosetBtn" class="text-xs bg-white border px-4 py-2 rounded-full">MY CLOSET (0)</button>
+</nav>
+
+<div class="max-w-[1300px] mx-auto px-6 grid md:grid-cols-[280px_1fr_360px] gap-6">
+  <!-- LEFT: Clothes -->
+  <div class="bg-white rounded-[24px] p-4 h-fit sticky top-6">
+    <h3 class="text-sm font-bold">2. Your Clothes</h3>
+    <input type="file" id="customCloth" class="mt-3 text-[11px] w-full" accept="image/*">
+    <p class="text-[10px] text-gray-400 mt-1">Upload your own t-shirt/kurta - auto added</p>
+    <div id="clothesGrid" class="grid grid-cols-2 gap-2 mt-4 max-h-[600px] overflow-y-auto"></div>
+  </div>
+
+  <!-- CENTER: Pose + Face -->
+  <div>
+    <h3 class="text-sm font-bold mb-3">1. Choose Pose</h3>
+    <div id="poseGrid" class="flex gap-3 overflow-x-auto pb-2"></div>
+
+    <div class="mt-6 bg-white rounded-[24px] p-5">
+      <h3 class="text-sm font-bold">3. Your Face</h3>
+      <input type="file" id="faceInput" class="mt-3 text-xs" accept="image/*">
+      <button onclick="openCam()" class="text-[11px] bg-[#ffe9f0] px-3 py-1 rounded-full ml-2">📷 Scan</button>
+      <video id="cam" autoplay class="hidden w-full rounded-xl mt-3"></video>
+      <button id="generate" class="mt-5 w-full bg-black text-white py-4 rounded-full text-sm">GENERATE MY DRIP ✨</button>
+      <p id="status" class="text-[11px] mt-2 text-gray-400"></p>
+    </div>
+  </div>
+
+  <!-- RIGHT: Output -->
+  <div class="bg-white rounded-[24px] p-3 sticky top-6">
+    <p class="text-xs p-2">OUTPUT</p>
+    <div class="bg-[#fcf8f3] rounded-[18px] h-[560px] flex items-center justify-center relative">
+      <img id="output" class="hidden w-full h-full object-contain rounded-[18px]">
+      <p id="place" class="text-xs text-gray-400">Your drip will appear here</p>
+    </div>
+    <button id="download" class="hidden mt-3 w-full border py-3 rounded-full text-xs">Download</button>
+  </div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
